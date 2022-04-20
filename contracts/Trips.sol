@@ -5,6 +5,8 @@ contract Trips {
 	
 	//INITIAL VALUES
 	//RegisterInitialTrip
+	uint WEI_TO_ETH = 10 ** 18;
+	
 	struct Trip{
 		address idPassenger;
 		address idDriver;
@@ -27,7 +29,7 @@ contract Trips {
 	
 	//End Trip
 	struct TripReceipt{
-		uint cost;
+		uint256 cost;
 		uint indexTrip;
 	}
 	mapping(bytes32 => TripReceipt) receipts;
@@ -38,7 +40,7 @@ contract Trips {
 	//Register initial Trip
 	function initTrip(address idDriver, address idVehicle, uint cost) public payable returns (uint){
 		//send eth to contract
-		require(msg.value >= 1 ether);
+		require(uint(msg.value) / WEI_TO_ETH == cost);
 		
 		uint idRegister = initialRegisterTrip.length;
 		initialRegisterTrip.push(Trip(msg.sender,idDriver,idVehicle,cost));
@@ -59,14 +61,23 @@ contract Trips {
 	}
 	
 	//End Trip
-	function endTrip(bytes32 tripTransaction, uint indexTrip) public payable returns (uint){
-		require(msg.value >= 1 ether);
+	function endTrip(bytes32 tripTransaction, uint indexTrip) public returns (uint){
 		uint cost= initialRegisterTrip[indexTrip].cost;
+		address driver = initialRegisterTrip[indexTrip].idDriver;
+		require(msg.sender == driver);
+		
+		//Transfer payment to driver
+		msg.sender.transfer(cost * 9 / 10 * WEI_TO_ETH);
 		
 		receipts[tripTransaction]=TripReceipt(cost,indexTrip);
-		//address addressDriver=initialRegisterTrip[indexTrip][2];
 		emit endT(tripTransaction, cost, indexTrip);
 		return 0;
+	}
+	
+	function widthdraw(uint amount) external {
+		//only validators can widthdraw
+		//require(msg.sender == '0x0');
+		msg.sender.transfer(amount);
 	}	
 	
 	//LOOK UP FUNCTIONS

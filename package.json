@@ -31,6 +31,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "besu:docker": "docker run -p 8545:8545 --mount type=bind,source=/tmp/besu/dev,target=/var/lib/besu hyperledger/besu:latest --miner-enabled --miner-coinbase 0x42db57dfc5ec008a8404f706601541ae19d2e51b --rpc-http-enabled --rpc-http-cors-origins=\"all\" --host-allowlist=\"*\" --network=dev --data-path=~/Besu/besu-22.1.1/Clique-Network/Node-1/data",
+    "besu:alethio":"docker run --rm -p 25000:80 -e APP_NODE_URL=http://localhost:8545 alethio/ethereum-lite-explorer",
     "besu:test": "besu --config-file=./besu_conf/besu_test_conf.toml",
     "besu:ropsten": "besu  --network=ropsten --rpc-http-enabled --rpc-http-cors-origins 'http://remix.ethereum.org'",
     "besu:rinkeby": "besu --network=rinkeby --data-path=<path>/<rinkebydata-path>",

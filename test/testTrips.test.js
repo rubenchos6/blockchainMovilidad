@@ -26,7 +26,7 @@ describe('Trips',()=>{
 	it('Init trip passenger and verify registry',()=>{
 		Trips.deployed().then(instance=>{
 			trips=instance;
-			return trips.initTrip(accounts[1],accounts[2],1,{value:web3.utils.toWei("1","ether"),from: account[0]});
+			return trips.initTrip(accounts[1],accounts[2],1,{from: account[0]});
 		}).then(transaction =>{
 			console.log(transaction);
 			transactionHash=transaction.tx;
