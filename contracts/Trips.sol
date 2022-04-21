@@ -67,7 +67,7 @@ contract Trips {
 		require(msg.sender == driver);
 		
 		//Transfer payment to driver
-		msg.sender.transfer(cost * 9 / 10 * WEI_TO_ETH);
+		msg.sender.transfer(cost * WEI_TO_ETH * 9 / 10);
 		
 		receipts[tripTransaction]=TripReceipt(cost,indexTrip);
 		emit endT(tripTransaction, cost, indexTrip);
