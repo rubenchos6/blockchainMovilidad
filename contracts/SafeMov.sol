@@ -7,7 +7,7 @@ contract SafeMov {
 	//RegisterInitialTrip
 	uint WEI_TO_ETH = 10 ** 18;
 	
-	event initT(address indexed _idPassenger, address indexed _idDriver, address indexed _idVehicle, uint cost);
+	event initT(address indexed _idPassenger, address indexed _idDriver, address indexed _idVehicle, uint _cost, string _timestamp);
 	
 	//RegisterAPs
 	string public ap;
@@ -20,10 +20,11 @@ contract SafeMov {
 	
 	//FUNCTIONS
 	//Register initial Trip
-	function initTrip(address idDriver, address idVehicle, uint cost) public payable returns (bool){
+	function initTrip(address idDriver, address idVehicle, uint cost, string memory passedTimestamp) public payable returns (bool){
 		//send eth to contract from passenger
-		require(uint(msg.value) / WEI_TO_ETH == cost);		
-		emit initT(msg.sender, idDriver, idVehicle, cost);
+		require(uint(msg.value) / WEI_TO_ETH == cost);
+		ap=passedTimestamp;		
+		emit initT(msg.sender, idDriver, idVehicle, cost,ap);
 		return true;
 	}
 	
