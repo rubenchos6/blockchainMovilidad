@@ -1,0 +1,45 @@
+[
+  {
+    "id": 0,
+    "name": "Gina",
+    "picture": "images/Gina.jpeg",
+    "nTrips": "+500",
+    "calif": "4.9" 
+  },
+  {
+    "id": 1,
+    "name": "Collins",
+    "picture": "images/Collins.jpeg",
+    "nTrips": "+100",
+    "calif": "4.3"
+  },
+  {
+    "id": 2,
+    "name": "Melissa",
+    "picture": "images/Melissa.jpeg",
+    "nTrips": "+200",
+    "calif": "4.7"
+  },
+  {
+    "id": 3,
+    "name": "Jean",
+    "picture": "images/Jean.jpeg",
+    "nTrips": "+300",
+    "calif": "4.4"
+  },
+  {
+    "id": 4,
+    "name": "Elvia",
+    "picture": "images/Elvia.jpeg",
+    "nTrips": "+50",
+    "calif": "4.0"
+  },
+  {
+    "id": 5,
+    "name": "Latisha",
+    "picture": "images/Latisha.jpeg",
+    "nTrips": "+450",
+    "calif": "4.8"
+  }
+]
+
