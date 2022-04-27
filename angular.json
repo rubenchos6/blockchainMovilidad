@@ -102,5 +102,8 @@
       }
     }
   },
-  "defaultProject": "safemovapp"
+  "defaultProject": "safemovapp",
+  "cli": {
+    "analytics": false
+  }
 }
