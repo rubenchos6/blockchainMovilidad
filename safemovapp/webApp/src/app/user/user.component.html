@@ -1,0 +1,93 @@
+<div class="row justify-content-center mb-3">
+    <div class="btn-group col-8" role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-primary" (click)="actual=true;">Viaje actual</button>
+        <button type="button" class="btn btn-primary" (click)="actual=false;">Historial</button>
+    </div>
+</div>
+<div id="viajeActual" *ngIf="actual">
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <label for="basic-url" class="form-label">Destination</label>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+            </div>
+        </div>
+        <div class="col-4">
+            <label for="basic-url" class="form-label">Origen</label>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="mb-3 d-grid gap-2 col-6">
+            <button type="button" class="btn-primary" (click)="configTripData()">Cotizar</button>
+        </div>
+    </div>
+    <div *ngIf="cotizar">
+        <div class="row justify-content-center">
+            <div class="col-4">
+                <label for="basic-url" class="form-label">Costo:</label>
+            </div>
+            <div class="col-4">
+                <p><strong>{{costo}}</strong></p>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="mb-3 d-grid gap-2 col-6">
+                <button type="button" class="btn-initTrip" (click)="initTrip()">Tomar viaje</button>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="tomarViaje">
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-3">
+                                <!--{{driver.image}}-->
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Collage_of_Six_Cats-02.jpg/1024px-Collage_of_Six_Cats-02.jpg"
+                                    class="card-img-top" alt="...">
+                            </div>
+                            <div class="col-6">
+                                <h5 class="card-title">Conductor</h5>
+                                <p class="card-text"><strong>Nombre:</strong> {{driver.name}}</p>
+                                <p class="card-text"><strong>Viajes:</strong> {{driver.nTrips}}</p>
+                                <p class="card-text"><strong>Calificación:</strong> {{driver.calif}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center m-3">
+            <div class="col-3">
+                <!--{{qr}}-->
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Collage_of_Six_Cats-02.jpg/1024px-Collage_of_Six_Cats-02.jpg"
+                    class="card-img-top" alt="...">
+            </div>
+        </div>
+    </div>
+</div>
+<div id="historial" *ngIf="!actual">
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Transacción</th>
+                        <th scope="col">Fecha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let trans of transacciones">
+                        <td><button style="border: none; background-color:#fff;" (click)="getTrip(trans.transHash)">{{trans.transHash}}</button></td>
+                        <td>{{trans.timestamp}}</td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -13,7 +13,9 @@ contract SafeMov {
 	//RegisterAPs
 	string public ap;
 	string public timestamp;
-	event registerAP(bytes32 indexed _tripTransaction, string _ap, string _timestamp);
+	string public rssi;
+	
+	event registerAP(bytes32 indexed _tripTransaction, string _ap, string _timestamp,string _rssi);
 	
 	//End Trip
 	event endT(bytes32 indexed _tripTransaction, uint _cost);
@@ -27,15 +29,16 @@ contract SafeMov {
 		ap=passedTimestamp;		
 		orig=passedOrigin;
 		dest=passedDestination;
-		emit initT(msg.sender, idDriver, idVehicle, cost,ap);
+		emit initT(msg.sender, idDriver, idVehicle, cost,ap,orig,dest);
 		return true;
 	}
 	
 	//Register AP and timestamp
-	function regisAPandTime(bytes32 tripTransaction, string memory passedAp, string memory passedTimestamp) public returns (bool){
+	function regisAPandTime(bytes32 tripTransaction, string memory passedAp, string memory passedTimestamp, string memory passedRSSI) public returns (bool){
 		ap=passedAp;
 		timestamp=passedTimestamp;
-		emit registerAP(tripTransaction,ap,timestamp);
+		rssi=passedRSSI;
+		emit registerAP(tripTransaction,ap,timestamp,rssi);
 		return true;
 	}
 	

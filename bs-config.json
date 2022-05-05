@@ -1,5 +1,8 @@
 {
   "server": {
-    "baseDir": ["./src", "./build/contracts"]
+    "baseDir": ["./safemovapp/webApp/src","./safemovapp/webApp/src/app","./safemovapp/webApp/src/app", "./build/contracts"],
+    "routes": {
+      "node_modules": "./safemovapp/webApp/node_modules"
+    }
   }
 }
