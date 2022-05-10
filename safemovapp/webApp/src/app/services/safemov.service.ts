@@ -104,7 +104,7 @@ export class SafemovService {
       console.log(safeMovContract);
       
       safeMovContract.deployed().then(function(instance:any) {
-        return instance.regisAPandTime(value.transactionHash,value.ap,value.timestamp,{from: value.vehicle}).then((transaction:any) =>{
+        return instance.regisAPandTime(value.transactionHash,value.ap,value.timestamp,value.rssi,{from: value.vehicle}).then((transaction:any) =>{
 	    console.log(transaction);
 	    var transactionHash=transaction.tx;
 	    return instance.getPastEvents('regisAPandTime',{filter:{_tripTransaction:value.transactionHash}});
