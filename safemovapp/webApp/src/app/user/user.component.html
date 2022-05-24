@@ -7,15 +7,15 @@
 <div id="viajeActual" *ngIf="actual">
     <div class="row justify-content-center">
         <div class="col-4">
-            <label for="basic-url" class="form-label">Destination</label>
+            <label for="basic-url" class="form-label">Destino</label>
             <div class="input-group mb-3">
-                <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+                <input type="text" class="form-control" id="destination" aria-describedby="basic-addon3">
             </div>
         </div>
         <div class="col-4">
             <label for="basic-url" class="form-label">Origen</label>
             <div class="input-group mb-3">
-                <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+                <input type="text" class="form-control" id="origin" aria-describedby="basic-addon3">
             </div>
         </div>
     </div>
@@ -35,7 +35,7 @@
         </div>
         <div class="row justify-content-center">
             <div class="mb-3 d-grid gap-2 col-6">
-                <button type="button" class="btn-initTrip" (click)="initTrip()">Tomar viaje</button>
+                <button type="button" class="btn-primary" (click)="initTrip()">Tomar viaje</button>
             </div>
         </div>
     </div>
@@ -47,7 +47,7 @@
                         <div class="row">
                             <div class="col-3">
                                 <!--{{driver.image}}-->
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Collage_of_Six_Cats-02.jpg/1024px-Collage_of_Six_Cats-02.jpg"
+                                <img src="assets/Gina.jpeg"
                                     class="card-img-top" alt="...">
                             </div>
                             <div class="col-6">
@@ -64,8 +64,8 @@
         <div class="row justify-content-center m-3">
             <div class="col-3">
                 <!--{{qr}}-->
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Collage_of_Six_Cats-02.jpg/1024px-Collage_of_Six_Cats-02.jpg"
-                    class="card-img-top" alt="...">
+                <qrcode [qrdata]=tH [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+
             </div>
         </div>
     </div>
@@ -82,12 +82,37 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let trans of transacciones">
-                        <td><button style="border: none; background-color:#fff;" (click)="getTrip(trans.transHash)">{{trans.transHash}}</button></td>
+                        <td><button style="border: none; background-color:#fff;" (click)="holaMundo(trans.transHash)">{{trans.transHash}}</button></td>
                         <td>{{trans.timestamp}}</td>
                     </tr>
                     
                 </tbody>
             </table>
         </div>
+    </div>
+    <div *ngIf="detalle">
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <app-detalle-historial [infoTrans]="trans"></app-detalle-historial>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Punto de acceso</th>
+                            <th scope="col">Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let trans of transacciones">
+                            <td>{{trans.transHash}}</td>
+                            <td>{{trans.timestamp}}</td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
     </div>
 </div>

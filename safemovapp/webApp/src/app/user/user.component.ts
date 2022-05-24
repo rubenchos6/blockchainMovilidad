@@ -14,24 +14,18 @@ export class UserComponent implements OnInit {
   ngOnInit(): void {
     
   }
-  dataInit = {
-      'driver':'0x627306090abaB3A6e1400e9345bC60c78a8BEf57',
-      'passenger':'',
-      'vehicle':'0xf17f52151EbEF6C7334FAD080c5704D77216b732',
-      'amount':'10',
-      'origin':'testOrigin1',
-      'destination':'testDestination1',
-      'timestamp':'testHour1'
-  }
+  
+  //Initial variables
   dataEnd = {
       'driver':'0x627306090abaB3A6e1400e9345bC60c78a8BEf57',
       'amount':'10',
       'transactionHash':'0x37ea1526c1857f6e8c945ca51ab5b319e5bb7d6a326112b526cb8f8999537846'
   }
-  costo = 58;
+  costo = 20;
   cotizar=false;
   tomarViaje=false;
   actual=true;
+  detalle=false;
   drivers=[
     {
       "id": 0,
@@ -39,43 +33,9 @@ export class UserComponent implements OnInit {
       "picture": "images/Gina.jpeg",
       "nTrips": "+500",
       "calif": "4.9" 
-    },
-    {
-      "id": 1,
-      "name": "Collins",
-      "picture": "images/Collins.jpeg",
-      "nTrips": "+100",
-      "calif": "4.3"
-    },
-    {
-      "id": 2,
-      "name": "Melissa",
-      "picture": "images/Melissa.jpeg",
-      "nTrips": "+200",
-      "calif": "4.7"
-    },
-    {
-      "id": 3,
-      "name": "Jean",
-      "picture": "images/Jean.jpeg",
-      "nTrips": "+300",
-      "calif": "4.4"
-    },
-    {
-      "id": 4,
-      "name": "Elvia",
-      "picture": "images/Elvia.jpeg",
-      "nTrips": "+50",
-      "calif": "4.0"
-    },
-    {
-      "id": 5,
-      "name": "Latisha",
-      "picture": "images/Latisha.jpeg",
-      "nTrips": "+450",
-      "calif": "4.8"
     }
   ];
+  tH:string='prueba';
   driver=this.drivers[0];
   transacciones=[
     {"transHash":"asdfghj",
@@ -84,15 +44,31 @@ export class UserComponent implements OnInit {
     {"transHash":"asdfghj",
       "timestamp":"20-15-2022"
     }
-  ]
+  ];
+  dataInit = {
+      'driver':'0x627306090abaB3A6e1400e9345bC60c78a8BEf57',
+      'passenger':'',
+      'vehicle':'0xf17f52151EbEF6C7334FAD080c5704D77216b732',
+      'amount':String(this.costo),
+      'origin':'',
+      'destination':'',
+      'timestamp':''
+  }
+  trans:any;
+  holaMundo(e:String){
+    console.log(e);
+    this.detalle=true;
+    this.trans=e;
+  }
+  
   configTripData(){
     this.cotizar=true;
     this.getAccounts();
-    console.log(this.dataInit);
+    
   }
   initTrip(){
-    this.tomarViaje=true;
     this.initT();
+    
     console.log(this.dataInit);
     
     //console.log(this.dataEnd);
@@ -112,19 +88,19 @@ export class UserComponent implements OnInit {
   }
   
   initT = () => {
+    //Actualizar datos del viaje
+    this.dataInit['origin']=((document.getElementById("origin") as HTMLInputElement).value);
+    this.dataInit['destination']=((document.getElementById("destination") as HTMLInputElement).value);
+    this.dataInit['timestamp']=(new Date()).toString();
+    console.log(this.dataInit);
     const that = this;
+    
+    //Invocar servicio del viaje
     this.safemovService.initTrip(that.dataInit).then((response: any) =>{
       console.log('user.components :: initT :: endOfTrans');
       console.log(response);
-    });
-  }
-  
-  endT = () => {
-    const that = this;
-    this.safemovService.endTrip(that.dataEnd).
-    then((retAccount: any) =>{
-      console.log(retAccount);
-      console.log('user.components :: endT :: endOfTrans');
+      that.tH=response;
+      that.tomarViaje=true;
     });
   }
   
@@ -135,6 +111,19 @@ export class UserComponent implements OnInit {
       console.log(response);
     });
   }
+  
+  
+  //////////////////////////////////////////////////////////////////
+  endT = () => {
+    const that = this;
+    this.safemovService.endTrip(that.dataEnd).
+    then((retAccount: any) =>{
+      console.log(retAccount);
+      console.log('user.components :: endT :: endOfTrans');
+    });
+  }
+  
+  
   
   getInfoEndT = () => {
     const that = this;

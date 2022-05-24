@@ -19,6 +19,7 @@
     "@angular/platform-browser-dynamic": "~13.3.0",
     "@angular/router": "~13.3.0",
     "@truffle/contract": "^4.5.8",
+    "angularx-qrcode": "^13.0.15",
     "buffer": "^6.0.3",
     "jquery": "^3.6.0",
     "rxjs": "~7.5.0",
