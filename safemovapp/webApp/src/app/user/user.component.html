@@ -1,7 +1,7 @@
 <div class="row justify-content-center mb-3">
     <div class="btn-group col-8" role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-primary" (click)="actual=true;">Viaje actual</button>
-        <button type="button" class="btn btn-primary" (click)="actual=false;">Historial</button>
+        <button type="button" class="btn btn-primary" (click)="act()">Viaje actual</button>
+        <button type="button" class="btn btn-primary" (click)="historial()">Historial</button>
     </div>
 </div>
 <div id="viajeActual" *ngIf="actual">
@@ -82,7 +82,7 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let trans of transacciones">
-                        <td><button style="border: none; background-color:#fff;" (click)="holaMundo(trans.transHash)">{{trans.transHash}}</button></td>
+                        <td><button style="border: none; background-color:#fff;" (click)="getSpecificTrip(trans.transHash)">{{trans.transHash}}</button></td>
                         <td>{{trans.timestamp}}</td>
                     </tr>
                     
@@ -93,7 +93,7 @@
     <div *ngIf="detalle">
         <div class="row justify-content-center">
             <div class="col-6">
-                <app-detalle-historial [infoTrans]="trans"></app-detalle-historial>
+                <app-detalle-historial [esUsuario]=true [infoTrans]="trans"></app-detalle-historial>
             </div>
         </div>
         <div class="row justify-content-center">
@@ -106,9 +106,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let trans of transacciones">
-                            <td>{{trans.transHash}}</td>
-                            <td>{{trans.timestamp}}</td>
+                        <tr *ngFor="let ap of aps">
+                            <td>{{ap.ap}}</td>
+                            <td>{{ap.timestamp}}</td>
                         </tr>
                         
                     </tbody>

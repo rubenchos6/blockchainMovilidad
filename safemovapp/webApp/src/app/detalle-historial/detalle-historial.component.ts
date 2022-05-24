@@ -8,17 +8,18 @@ import { Component, OnInit,Input } from '@angular/core';
 export class DetalleHistorialComponent implements OnInit {
   constructor() { }
 
-  @Input() infoTrans="";
+  @Input() infoTrans={
+    "transHash":"",
+    "destination":"", 
+    "origin":"",
+    "_cost":"",
+    "_idDriver":"",
+    "_idPassenger":"",
+    "_idVehicle":"",
+    "timestamp":"",
+  };
+  @Input() esUsuario=true;
   
-  esUsuario = true;
-  transaccion="";
-  conductor="";
-  usuario="";
-  direccion="";
-  costo="";
-  timestamp="";
-  destino="";
-  origen="";
   ngOnInit(): void {
   }
 

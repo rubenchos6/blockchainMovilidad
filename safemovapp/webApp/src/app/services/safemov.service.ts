@@ -14,6 +14,7 @@ export class SafemovService {
   private accounts: any = null;
   private enable: any;
   
+  //Identificar si se puede correr comandos de web3
   constructor() {
     if (window.ethereum === undefined) {
       alert('Non-Ethereum browser detected. Install MetaMask');
@@ -40,6 +41,7 @@ export class SafemovService {
     return Promise.resolve(enable);
   }
   
+  //Obtener cuenta asociada a MetaMask
   public async getAccounts(): Promise<any> {
     console.log('safemov.service :: getAccounts :: start');
     if (this.accounts == null) {
@@ -67,6 +69,7 @@ export class SafemovService {
   }
   
   //SETTERS 
+  //Iniciar viaje
   public async initTrip(value:any): Promise<any> {
     const that = this;
     console.log('safemov.service :: initTrip passenger: ' +value.passenger + ', driver: ' + value.driver + ', vehicle: ' + value.vehicle + ', cost:' + value.amount);
@@ -90,6 +93,7 @@ export class SafemovService {
     });
   } 
   
+  //Registrar ap y timestamp
   public async regisAPandTime(value:any):Promise<any>{
     const that = this;
     console.log('safemov.service :: regisAPandTime AP: ' + value.ap + ', transactionHash: '+value.transactionHash+', timestamp:' + value.timestamp);
@@ -116,6 +120,7 @@ export class SafemovService {
     });
   }
   
+  //Finalizar viaje
   public async endTrip(value:any): Promise<any>{
     const that = this;
     console.log('safemov.service :: endTrip driver: ' + value.driver + ', transactionHash: '+value.transactionHash+', cost:' + value.amount);
@@ -143,6 +148,7 @@ export class SafemovService {
   }
   
   //GETTERS  
+  //Obtener viaje correspondiente a una cuenta, puede ser pasajero o conductor
   public async getTripsRelatedToAccount(address:string, type:string):Promise<any>{
     const that = this;
     console.log('safemov.service :: getTripsRelatedToAccount address: ' + address);
@@ -156,21 +162,26 @@ export class SafemovService {
       console.log('safemov.service :: getTripsRelatedToAccount :: getTripsRelatedToAccount');
       console.log(safeMovContract);
       var filterAdd;
-      if (type=='p'){
-      	filterAdd='_idPassenger';
+      if (type==='p'){
+      	safeMovContract.deployed().then(function(instance:any) {
+        return instance.getPastEvents('initT',{filter:{'_idPassenger':address}}).then((transaction:any) =>{
+	    console.log(transaction);
+	    resolve(transaction);
+	  });
+        });
       }
       else{
-      	filterAdd='_idDriver';
-      }
-      safeMovContract.deployed().then(function(instance:any) {
-        return instance.getPastEvents('initT',{filter:{filterAdd:address}}).then((transaction:any) =>{
+      	safeMovContract.deployed().then(function(instance:any) {
+        return instance.getPastEvents('initT',{filter:{'_idDriver':address}}).then((transaction:any) =>{
 	    console.log(transaction);
-	    resolve(transaction[0]);
+	    resolve(transaction);
 	  });
-      });
+        });
+      }
     });
   }
   
+  //Obtener viaje finalizado según su TransactionHash
   public async getTripInfoFromTransaction(tx:string):Promise<any>{
     const that = this;
     console.log('safemov.service :: getTripInfoFromTransaction transactionHash: ' + tx);
@@ -186,12 +197,13 @@ export class SafemovService {
       safeMovContract.deployed().then(function(instance:any) {
         return instance.getPastEvents('endT',{filter:{_tripTransaction:tx}}).then((transaction:any) =>{
 	    console.log(transaction);
-	    resolve(transaction[0]);
+	    resolve(transaction);
 	  });
       });
     });
   }
   
+  //Obtener aps y timestamps de un viaje según su TransactionHash
   public async getAPsInfoFromTransaction(tx:string):Promise<any>{
     const that = this;
     console.log('safemov.service :: getAPsInfoFromTransaction transactionHash: ' + tx);

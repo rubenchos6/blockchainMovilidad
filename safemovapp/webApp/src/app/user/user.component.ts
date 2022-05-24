@@ -7,20 +7,16 @@ import {SafemovService} from '../services/safemov.service';
   styleUrls: ['./user.component.css'],
   providers: [SafemovService]
 })
-export class UserComponent implements OnInit {
+
+export class UserComponent implements OnInit  {
 
   constructor(private safemovService: SafemovService) { }
 
   ngOnInit(): void {
-    
+    this.getAccounts();
   }
   
   //Initial variables
-  dataEnd = {
-      'driver':'0x627306090abaB3A6e1400e9345bC60c78a8BEf57',
-      'amount':'10',
-      'transactionHash':'0x37ea1526c1857f6e8c945ca51ab5b319e5bb7d6a326112b526cb8f8999537846'
-  }
   costo = 20;
   cotizar=false;
   tomarViaje=false;
@@ -40,9 +36,6 @@ export class UserComponent implements OnInit {
   transacciones=[
     {"transHash":"asdfghj",
       "timestamp":"20-15-2022"
-    },
-    {"transHash":"asdfghj",
-      "timestamp":"20-15-2022"
     }
   ];
   dataInit = {
@@ -55,25 +48,40 @@ export class UserComponent implements OnInit {
       'timestamp':''
   }
   trans:any;
-  holaMundo(e:String){
-    console.log(e);
-    this.detalle=true;
-    this.trans=e;
+  tripsHistorial:Array<{}>=[];
+  aps=[
+    {"ap":"ap1",
+     "timestamp":"20-15-2022"
+    }
+  ];
+  selected:any;
+  
+  //////////////////////////////////////////////////////////////
+  //Funciones
+  //Activar interfaz de viaje actual
+  act(){
+    this.actual=true;
   }
   
+  //Activar interfaz de historial
+  historial(){
+    const that=this;
+    this.getInfoInitT();
+  }
+  
+  //Activar interfaz de cotización
   configTripData(){
     this.cotizar=true;
     this.getAccounts();
-    
   }
+  
+  //Inicio de viaje
   initTrip(){
     this.initT();
-    
     console.log(this.dataInit);
-    
-    //console.log(this.dataEnd);
-    //this.endT();
   }
+  
+  //Obtener cuenta asociada a MetaMask
   getAccounts = () => {
     const that = this;
     this.safemovService.getAccounts().
@@ -82,11 +90,12 @@ export class UserComponent implements OnInit {
       that.dataInit.passenger = retAccount[0];
       console.log('user.components :: getAccounts :: this.reg');
       console.log(that.dataInit);
-    }).catch(function(error) {
+    }).catch(function(error:any) {
       console.log(error);
     });
   }
   
+  //método que invoca el servicio de initTrip del contrato inteligente
   initT = () => {
     //Actualizar datos del viaje
     this.dataInit['origin']=((document.getElementById("origin") as HTMLInputElement).value);
@@ -94,7 +103,6 @@ export class UserComponent implements OnInit {
     this.dataInit['timestamp']=(new Date()).toString();
     console.log(this.dataInit);
     const that = this;
-    
     //Invocar servicio del viaje
     this.safemovService.initTrip(that.dataInit).then((response: any) =>{
       console.log('user.components :: initT :: endOfTrans');
@@ -104,44 +112,61 @@ export class UserComponent implements OnInit {
     });
   }
   
+  //Obtener información del viaje utilizando servicio del contrato inteligente
   getInfoInitT = () => {
     const that = this;
-    this.safemovService.getTripsRelatedToAccount(that.dataInit.passenger,'p').then((response: any) =>{
+    this.safemovService.getTripsRelatedToAccount(that.dataInit.passenger,'p').then((response) =>{
       console.log('user.components :: getTripsRelatedToAccount :: endOfTrans');
       console.log(response);
+      that.transacciones=[];
+      response.forEach(function (trip:any) {
+        var val={
+          "transHash":trip['transactionHash'],
+          "timestamp":trip['returnValues']['_timestamp'],
+        }
+        var tr={
+          "transHash":trip['transactionHash'] as string,
+          "destination":trip['returnValues']['destination'] as string, 
+          "origin":trip['returnValues']['origin'] as string,
+          "_cost":trip['returnValues']['_cost'] as string,
+          "_idDriver":trip['returnValues']['_idDriver'] as string,
+          "_idPassenger":trip['returnValues']['_idPassenger'] as string,
+          "_idVehicle":trip['returnValues']['_idVehicle'] as string,
+          "timestamp":trip['returnValues']['_timestamp'] as string,
+        }
+        that.tripsHistorial.push(tr);
+        that.transacciones.push(val);
+        that.actual=false;
+      }); 
     });
   }
   
-  
-  //////////////////////////////////////////////////////////////////
-  endT = () => {
-    const that = this;
-    this.safemovService.endTrip(that.dataEnd).
-    then((retAccount: any) =>{
-      console.log(retAccount);
-      console.log('user.components :: endT :: endOfTrans');
+  //Obtener información del viaje específico seleccionado en el historial
+  getSpecificTrip(e:String){
+    this.selected = this.tripsHistorial.find((obj) => {
+      return obj["transHash" as keyof typeof obj] === e;
     });
+    console.log(this.selected);
+    this.detalle=true;
+    this.trans=this.selected;
+    this.getInfoAP();
   }
   
-  
-  
-  getInfoEndT = () => {
-    const that = this;
-    this.safemovService.getTripInfoFromTransaction(that.dataEnd.transactionHash).then((response: any) =>{
-      console.log('user.components :: getTripInfoFromTransaction :: endOfTrans');
-      console.log(response);
-    });
-  }
-  
+  //Obtener información de los aps y timestamps del viaje específico seleccionado en el historial
   getInfoAP = () => {
     const that = this;
-    this.safemovService.getAPsInfoFromTransaction(that.dataEnd.transactionHash).then((response: any) =>{
+    this.safemovService.getAPsInfoFromTransaction(that.selected.transHash).then((response: any) =>{
       console.log('user.components :: getAPsInfoFromTransaction :: endOfTrans');
       console.log(response);
+      that.aps=[];
+      response.forEach(function (ap:any) {
+        var val={
+          "ap":ap['returnValues']['_ap'],
+          "timestamp":ap['returnValues']['_timestamp'],
+        }
+        that.aps.push(val);
+      });
+      
     });
-  }
-  
-  getTrip(e:String){
-    console.log(e);
   }
 }
