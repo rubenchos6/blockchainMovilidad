@@ -62,7 +62,8 @@
     "rimraf": "^3.0.2",
     "rxjs": "^6.5.4",
     "truffle-contract": "^4.0.31",
-    "web3": "^1.2.7"
+    "web3": "^1.2.7",
+    "web3-eth-personal": "^1.7.3"
   },
   "devDependencies": {
     "@nestjs/cli": "^7.0.0",

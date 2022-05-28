@@ -1,0 +1,16 @@
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col">
+                <h5>Transacción: {{infoTrans.transHash}}</h5>
+                <span  *ngIf="esUsuario"><p>Dirección Conductor: {{infoTrans._idDriver}}</p></span>
+                <span  *ngIf="!esUsuario"><p>Dirección Usuario: {{infoTrans._idPassenger}}</p></span>
+                <p>Dirección Vehículo: {{infoTrans._idVehicle}}</p>
+                <p>Costo: {{infoTrans._cost}}</p>
+                <p>Timestamp: {{infoTrans.timestamp}}</p>
+                <p>Destino: {{infoTrans.destination}}</p>
+                <p>Origen: {{infoTrans.origin}}</p>
+            </div>
+        </div>
+    </div>
+</div>

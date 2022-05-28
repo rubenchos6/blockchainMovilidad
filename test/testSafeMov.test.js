@@ -19,7 +19,7 @@ describe('SafeMov Contract',()=>{
 	it('Init trip passenger and verify registry',()=>{
 		SafeMov.deployed().then(instance=>{
 			safemov=instance;
-			return safemov.initTrip(accounts[1],accounts[2],10,'testHour','testOrigin','testDestination',{value:web3.utils.toWei("10","ether"),from: account[0]});
+			return safemov.initTrip(accounts[1],accounts[2],10,'testHour','testOrigin','testDestination',{value:web3.utils.toWei("10","ether"),from: accounts[0]});
 		}).then(transaction =>{
 			console.log(transaction);
 			transactionHash=transaction.tx;

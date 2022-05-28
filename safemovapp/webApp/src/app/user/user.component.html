@@ -1,0 +1,118 @@
+<div class="row justify-content-center mb-3">
+    <div class="btn-group col-8" role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-primary" (click)="act()">Viaje actual</button>
+        <button type="button" class="btn btn-primary" (click)="historial()">Historial</button>
+    </div>
+</div>
+<div id="viajeActual" *ngIf="actual">
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <label for="basic-url" class="form-label">Destino</label>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" id="destination" aria-describedby="basic-addon3">
+            </div>
+        </div>
+        <div class="col-4">
+            <label for="basic-url" class="form-label">Origen</label>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" id="origin" aria-describedby="basic-addon3">
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="mb-3 d-grid gap-2 col-6">
+            <button type="button" class="btn-primary" (click)="configTripData()">Cotizar</button>
+        </div>
+    </div>
+    <div *ngIf="cotizar">
+        <div class="row justify-content-center">
+            <div class="col-4">
+                <label for="basic-url" class="form-label">Costo:</label>
+            </div>
+            <div class="col-4">
+                <p><strong>{{costo}}</strong></p>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="mb-3 d-grid gap-2 col-6">
+                <button type="button" class="btn-primary" (click)="initTrip()">Tomar viaje</button>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="tomarViaje">
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-3">
+                                <!--{{driver.image}}-->
+                                <img src="assets/Gina.jpeg"
+                                    class="card-img-top" alt="...">
+                            </div>
+                            <div class="col-6">
+                                <h5 class="card-title">Conductor</h5>
+                                <p class="card-text"><strong>Nombre:</strong> {{driver.name}}</p>
+                                <p class="card-text"><strong>Viajes:</strong> {{driver.nTrips}}</p>
+                                <p class="card-text"><strong>Calificación:</strong> {{driver.calif}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center m-3">
+            <div class="col-3">
+                <!--{{qr}}-->
+                <qrcode [qrdata]=tH [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="historial" *ngIf="!actual">
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Transacción</th>
+                        <th scope="col">Fecha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let trans of transacciones">
+                        <td><button style="border: none; background-color:#fff;" (click)="getSpecificTrip(trans.transHash)">{{trans.transHash}}</button></td>
+                        <td>{{trans.timestamp}}</td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div *ngIf="detalle">
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <app-detalle-historial [esUsuario]=true [infoTrans]="trans"></app-detalle-historial>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Punto de acceso</th>
+                            <th scope="col">Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let ap of aps">
+                            <td>{{ap.ap}}</td>
+                            <td>{{ap.timestamp}}</td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+    </div>
+</div>
